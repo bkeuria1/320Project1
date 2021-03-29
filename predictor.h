@@ -5,10 +5,10 @@
 using namespace std;
 class Predictor{
     private:
-	map<long,string> pcAction;
+	map<unsigned long long,string> pcAction;
     public:
 	Predictor();
-	//Predictor(map<long,string>);
+	Predictor(map<unsigned long long,string>);
 	pair<long,long>AlwaysTaken();
 	pair<long,long>NeverTaken();
 

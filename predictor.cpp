@@ -1,19 +1,33 @@
 #include "predictor.h"
 #include <iostream>
-//using namespace std;
 //Predictor::Predictor(map<long,string> pcAction):pcAction(pcAction){
-
-
+#include <string.h>
+using namespace std;
 Predictor::Predictor(){
 }
 
-pair<long,long>AlwaysTaken(){
-
-  return pair<long, unsigned long>(0,0);
+Predictor::Predictor(map<unsigned long long,string>_pcAction):pcAction(_pcAction){
+}	
+pair<long,long>Predictor::AlwaysTaken(){
+  int correct = 0;
+  for (std::map<unsigned long long,string>::iterator it=pcAction.begin(); it!=pcAction.end(); ++it){
+            if(it->second=="T"){
+		cout<<"correct"<<endl;	
+		correct++;
+	   }
+    } 
+  return pair<long, long>(correct,pcAction.size());
 }
-pair<long,long>NeverTaken(){
+pair<long,long>Predictor::NeverTaken(){
 
-	return pair<long, unsigned long>(0,0);
+ 
+   int correct = 0;
+  for (std::map<unsigned long long,string>::iterator it=pcAction.begin(); it!=pcAction.end(); ++it){
+            if(it->second=="NT"){
+                correct++;
+           }
+    }
+  return pair<long, unsigned long>(correct,pcAction.size());
 
 }
 
