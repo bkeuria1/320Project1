@@ -6,13 +6,13 @@
 using namespace std;
 class Predictor{
     private:
-	map<unsigned long long,string> pcAction;
+//	map<unsigned long long,string> pcAction;
 	vector<string>actions;
-	vector<unsigned long long> address;
-	vector<unsigned long long> branch;
+	vector< long> address;
+	//vector<unsigned long long> branch;
     public:	
 	Predictor();
-	Predictor(map<unsigned long long,string>);
+	Predictor( vector<string>actions,vector< long> address);
 	pair<long,long>AlwaysTaken();
 	pair<long,long>NeverTaken();
 	pair<long,long>SingleBit(int size);

@@ -6,8 +6,10 @@ using namespace std;
 Predictor::Predictor(){
 }
 
-Predictor::Predictor(map<unsigned long long,string>_pcAction):pcAction(_pcAction){
-}	
+Predictor::Predictor(vector<string>_actions,vector<long>_address ):actions(_actions), address(_address){
+}
+
+/*
 pair<long,long>Predictor::AlwaysTaken(){
   int correct = 0;
   for (std::map<unsigned long long,string>::iterator it=pcAction.begin(); it!=pcAction.end(); ++it){
@@ -31,27 +33,34 @@ pair<long,long>Predictor::NeverTaken(){
 
 }
 
-
+*/
 pair<long,long>Predictor::SingleBit(int size){
 
 
    int correct = 0;
    vector<int> table(size,1);
-  for (std::map<unsigned long long,string>::iterator it=pcAction.begin(); it!=pcAction.end(); ++it){
-           int index = it->first%size;
+  for (int i = 0; i<actions.size();i++){
+           int index = address.at(i)%size;
 	   int predicted = table.at(index);
-	   string action = it->second;
-	   if(action=="T" && predicted==1 || action=="NT" && predicted==0){
-		correct++;
-	   }
-           //check for inaccurate result and update table;
-       	  else if(action=="T"){
-		table.at(index) = 0;
+	   string action = actions.at(i);
+	   if(predicted==1){
+		if (action == "T"){correct++;}
+		else{
+ 		table.at(index) = 0;
+		}
+		
 	  }
-	 else if(action == "NT"){
-		table.at(index) = 1;
-	 }
+
+ 	  else if(predicted==0){
+                if (action== "NT"){correct++;}
+                else{
+                 table.at(index) = 1;
+                }
+
+ 
+
     }
-  return pair<long, unsigned long>(correct,pcAction.size());
+}
+  return pair<long, unsigned long>(correct, actions.size());
 
 }
