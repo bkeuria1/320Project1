@@ -40,11 +40,12 @@ int main(int argc, char*argv[]){
 	myfile<<taken<<","<<total<<";\n";
 	myfile<<notTaken<<","<<total<<";\n";
 	
-	
-	pair<long,long>single = pr.SingleBit(32);
-	myfile<<single.first<<","<<single.second<<";";
 
+	pair<long,long>single = pr.SingleBit(2048);
+	myfile<<single.first<<","<<single.second<<";"<<endl;
 
+	pair<long,long>Double = pr.DoubleBit(16);
+        myfile<<Double.first<<","<<Double.second<<";"<<endl;
 
   return 0;
 
