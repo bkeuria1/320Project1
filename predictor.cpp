@@ -159,4 +159,18 @@ long Predictor::GShare(const int historySize){
  return correct;
 
 }
+long Predictor::tournament(){
+ bool gCorrect = false;
+ bool bCorrect = false; 
+ int tableSize = 2048;
 
+ vector<int>gTable(tableSize,3);
+ vector<int>sTable(table,3);
+ //3 -predictor 1 (b)
+//2 weakly predictor 1 (b)
+//1 weak predictor 2 (g)
+//0 predictor 2 (g)
+
+
+
+}

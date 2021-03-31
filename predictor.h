@@ -18,7 +18,7 @@ class Predictor{
 	pair<long,long>SingleBit(int size);
         pair <long,long>DoubleBit(int size);
         long GShare(const int historySize);
-	
+        long tournament();	
 
 };
 #endif
