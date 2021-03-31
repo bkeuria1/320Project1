@@ -11,31 +11,6 @@ Predictor::Predictor(){
 Predictor::Predictor(vector<string>_actions,vector<long>_address ):actions(_actions), address(_address){
 }
 
-/*
-pair<long,long>Predictor::AlwaysTaken(){
-  int correct = 0;
-  for (std::map<unsigned long long,string>::iterator it=pcAction.begin(); it!=pcAction.end(); ++it){
-            if(it->second=="T"){
-		cout<<"correct"<<endl;	
-		correct++;
-	   }
-    } 
-  return pair<long, long>(correct,pcAction.size());
-}
-pair<long,long>Predictor::NeverTaken(){
-
- 
-   int correct = 0;
-  for (std::map<unsigned long long,string>::iterator it=pcAction.begin(); it!=pcAction.end(); ++it){
-            if(it->second=="NT"){
-                correct++;
-           }
-    }
-  return pair<long, unsigned long>(correct,pcAction.size());
-
-}
-
-*/
 pair<long,long>Predictor::SingleBit(int size){
 
 
@@ -163,14 +138,74 @@ long Predictor::tournament(){
  bool gCorrect = false;
  bool bCorrect = false; 
  int tableSize = 2048;
-
+ int ghr = 0;
+ int correct = 0;
+ vector<int>bTable(tableSize,3);
  vector<int>gTable(tableSize,3);
- vector<int>sTable(table,3);
+ vector<int>sTable(tableSize,0);
  //3 -predictor 1 (b)
 //2 weakly predictor 1 (b)
 //1 weak predictor 2 (g)
 //0 predictor 2 (g)
 
+for(int i =0;i<actions.size();i++){
+   string action = actions.at(i);
+    long bIndex = address.at(i)%tableSize;
+    long sIndex = address.at(i)%tableSize;
+    long gIndex = ghr ^ bIndex;
+    
+  //check if bimodal is correct
+ if(action=="T" &&( bTable.at(bIndex)==3 || bTable.at(bIndex)==2)){
+ 	bCorrect = true;
+	correct++;
+        if(bTable.at(bIndex)==2)bTable.at(bIndex)+=1;
+ }
+   else if(action == "NT"   && (bTable.at(bIndex) ==0 || bTable.at(bIndex)==1)){
+                 bCorrect = true;
+                 correct++;
+                if(bTable.at(bIndex) == 1) bTable.at(bIndex)=0;
+    }
+else{
+  if(action == "T")bTable.at(bIndex)-=1;
+  if(action == "NT")bTable.at(bIndex)+=1;
+}   
 
+
+//check if gshare is correct
+ if(action=="T" &&( gTable.at(gIndex)==3 || gTable.at(gIndex)==2)){
+        gCorrect = true;
+       // correct++; 
+        if(gTable.at(gIndex)==2)gTable.at(gIndex)+=1;
+ }      
+   else if(action == "NT"   && (gTable.at(gIndex) ==0 || gTable.at(gIndex)==1)){
+                 gCorrect = true;
+                 //correct++; 
+                if(gTable.at(gIndex) == 1) gTable.at(gIndex)=0;
+    }           
+else{
+  if(action == "T")gTable.at(gIndex)-=1;
+  if(action == "NT")gTable.at(gIndex)+=1;
+}
+//update gshare
+	int addedBit = (action == "T") ? 1: 0;
+        ghr <<=1;
+        ghr |= addedBit;
+        ghr &=(1<<11)-1;   
+//selector stuff
+
+//check if we predicted correctly
+if((gCorrect && (sTable.at(sIndex) == 0|| sTable.at(sIndex)==1)) || 
+   ( bCorrect && (sTable.at(sIndex) == 2 || sTable.at(sIndex)==3)) ){
+	  correct++;
+}
+//check where we need to transition too
+
+int selected = sTable.at(sIndex);
+if(gCorrect && !bCorrect)sTable.at(sIndex)+=1;
+if(!gCorrect && bCorrect)sTable.at(sIndex)-=1;
+}
+
+
+return correct;
 
 }

@@ -49,7 +49,9 @@ int main(int argc, char*argv[]){
 
        long g = pr.GShare(11);
        myfile<<g<<","<<total<<";"<<endl;
-
+  
+       long t = pr.tournament();
+       myfile<<t<<","<<total<<";"<<endl;
   return 0;
 
 
