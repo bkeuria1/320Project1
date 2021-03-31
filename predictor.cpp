@@ -2,6 +2,7 @@
 #include <iostream>
 //Predictor::Predictor(map<long,string> pcAction):pcAction(pcAction){
 #include <string>
+#include <bits/stdc++.h>
 #include <vector>
 using namespace std;
 Predictor::Predictor(){
@@ -107,7 +108,7 @@ cout<<table.size()<<endl;
   return pair<long, unsigned long>(correct, actions.size());
 
 }
-long Predictor::GShare(int historySize){
+long Predictor::GShare(const int historySize){
 	/*
 	string Sghr;
         vector<string>Vghr (historySize,"0");
@@ -115,6 +116,7 @@ long Predictor::GShare(int historySize){
 		Sghr.append(Vghr.at(i));
 	}
        */
+
 	int ghr = 0;
 	int correct = 0;  
 	//3 -strongly taken
@@ -145,10 +147,12 @@ long Predictor::GShare(int historySize){
                 if(predicted == 0 )table.at(index) = 1;
         }   
 	//update ghr
-        
+	//bitset
+
+	        
 	int addedBit = (action == "T") ? 1: 0;
 	ghr <<=1;
-        ghr |= addedBit;
+       ghr |= addedBit;
 	ghr &=(1<< historySize)-1;
 }
 

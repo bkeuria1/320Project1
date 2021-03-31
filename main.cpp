@@ -47,7 +47,7 @@ int main(int argc, char*argv[]){
 	pair<long,long>d = pr.DoubleBit(2048);
         myfile<<d.first<<","<<d.second<<";"<<endl;
 
-       long g = pr.GShare(5);
+       long g = pr.GShare(11);
        myfile<<g<<","<<total<<";"<<endl;
 
   return 0;

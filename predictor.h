@@ -17,7 +17,7 @@ class Predictor{
 	pair<long,long>NeverTaken();
 	pair<long,long>SingleBit(int size);
         pair <long,long>DoubleBit(int size);
-        long GShare(int historySize);
+        long GShare(const int historySize);
 	
 
 };
