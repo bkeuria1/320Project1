@@ -1,7 +1,8 @@
 #include "predictor.h"
 #include <iostream>
 //Predictor::Predictor(map<long,string> pcAction):pcAction(pcAction){
-#include <string.h>
+#include <string>
+#include <vector>
 using namespace std;
 Predictor::Predictor(){
 }
@@ -75,25 +76,27 @@ pair<long,long>Predictor::DoubleBit(int size){
 //2-weakly taken
 //1- weakly not taken
 //0 - strongly not taken
+cout<<table.size()<<endl;
   for (int i = 0; i<actions.size();i++){
            int index = address.at(i)%size;
-           if(index == size)cout<<"wow"<<endl;
+          
            int predicted = table.at(index);
            string action = actions.at(i);
            if(action == "T" && (predicted ==2 || predicted ==3)){
 		correct++;
-		if(predicted == 2)table.at(i) = 3;
+		if(predicted == 2)table.at(index) = 3;
           }
-
+          
           else if(action == "NT"   && (predicted ==0 || predicted ==1)){
                  correct++;
-		if(predicted == 1) table.at(i)=0;
+		if(predicted == 1) table.at(index)=0;
 	}
 	else{
 	 	//incorrect cases
-		if(predicted == 2)table.at(i) = 1;
-		if(predicted ==3)table.at(i) = 2;
-		if(predicted == 1) table.at(i) = 2 ;
+		if(predicted == 2)table.at(index) = 1;
+		if(predicted ==3)table.at(index) = 2;
+		if(predicted == 1) table.at(index) = 2 ;
+ 		if(predicted == 0 )table.at(index) = 1;
 	}
                
 
@@ -104,5 +107,52 @@ pair<long,long>Predictor::DoubleBit(int size){
   return pair<long, unsigned long>(correct, actions.size());
 
 }
+long Predictor::GShare(int historySize){
+	/*
+	string Sghr;
+        vector<string>Vghr (historySize,"0");
+	for(int i = 0 ;i<Vghr.size();i++){
+		Sghr.append(Vghr.at(i));
+	}
+       */
+	int ghr = 0;
+	int correct = 0;  
+	//3 -strongly taken
+	//2 - weak taken
+	//1 - weak not taken
+	//0 -strong not taken
+	vector<int>table(2048,3);
+	for(int i =0; i<actions.size();i++){
+	    string action = actions.at(i);
+	    long pc = address.at(i)%2048;
+	  // cout<<i<<endl;
+	    long index = ghr ^ pc;
+	    int predicted = table.at(index); 
+             if(action == "T" && (predicted ==2 || predicted ==3)){
+                correct++;
+                if(predicted == 2)table.at(index) = 3;
+          }     
+          
+          else if(action == "NT"   && (predicted ==0 || predicted ==1)){
+                 correct++; 
+                if(predicted == 1) table.at(index)=0;
+        }       
+        else{
+                //incorrect cases
+                if(predicted == 2)table.at(index) = 1;
+                if(predicted ==3)table.at(index) = 2;
+                if(predicted == 1) table.at(index) = 2 ;
+                if(predicted == 0 )table.at(index) = 1;
+        }   
+	//update ghr
+        
+	int addedBit = (action == "T") ? 1: 0;
+	ghr <<=1;
+        ghr |= addedBit;
+	ghr &=(1<< historySize)-1;
+}
 
+ return correct;
+
+}
 
