@@ -11,6 +11,7 @@ int main(int argc, char*argv[]){
 	long long total  = 0;	
 	vector< long>address;
 	vector<string>actions;
+        vector<long>branch;;
   // Temporary variables
 	  unsigned long long addr;
  	 string behavior;
@@ -23,7 +24,7 @@ int main(int argc, char*argv[]){
 	//   cout<<addr<<","<<behavior<<endl;
 	   address.push_back(addr);
 	   actions.push_back(behavior);
-	 
+	   branch.push_back(target);
 	   if(behavior == "T") {
      		 taken++;
    	    }else {
@@ -33,25 +34,32 @@ int main(int argc, char*argv[]){
 	  total++;
 	  }
 	
-	Predictor pr(actions,address);	
+	Predictor pr(actions,address,branch);	
 //	cout<<"The size of the map is "<<pcAddress.size()<<endl;
         ofstream myfile;
 	myfile.open(argv[2]);
 	myfile<<taken<<","<<total<<";\n";
 	myfile<<notTaken<<","<<total<<";\n";
-	
+       
+        int sizes [] = {16, 32, 128, 256, 512, 1024, 2048 };
 
-	pair<long,long>single = pr.SingleBit(2048);
-	myfile<<single.first<<","<<single.second<<";"<<endl;
+	for(auto &i : sizes){
+	    myfile<<pr.SingleBit(i)<<","<<total<<"; ";	          
+	}
+	myfile<<"\n";	
 
-	pair<long,long>d = pr.DoubleBit(2048);
-        myfile<<d.first<<","<<d.second<<";"<<endl;
+         for(auto &i : sizes){
+            myfile<<pr.DoubleBit(i)<<","<<total<<"; ";           
+        }
+        myfile<<"\n";
 
-       long g = pr.GShare(11);
-       myfile<<g<<","<<total<<";"<<endl;
-  
-       long t = pr.tournament();
-       myfile<<t<<","<<total<<";"<<endl;
+       for(int i = 3;i<=11;i++){
+	  myfile<<pr.GShare(i)<<","<<total<<"; ";
+       }
+	myfile<<"\n";
+
+       myfile<<pr.tournament()<<","<<total<<"; "<<endl;
+      myfile<<pr.BTB().first<<","<<pr.BTB().second<<";"<<endl;
   return 0;
 
 
