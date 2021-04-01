@@ -220,37 +220,42 @@ pair<long,long> Predictor::BTB(){
  bool nextPC = false;
    long b;
   long attempted = 0;
-  vector<int>bi(tableSize,1);
-  vector<int> btb(tableSize,0);
+  vector<int>bi(tableSize,1); //bimodal table
+  vector<int> btb(tableSize); //btb table
   long correct = 0;
   for(int i = 0; i<branch.size();i++){
      string action = actions.at(i);
-
-     int index;
-     //if(nextPC) index = b%tableSize;
-      index = address.at(i)%tableSize;	
-     //read from btb if predicted taken
+     int index = address.at(i)%tableSize; //pc Counter,I called it address
+   //  if(address.at(i)!=btb.at(index)){ 
+     //
      int predicted = bi.at(index);
+    
+    if(btb.at(index)==branch.at(i) ||(predicted==0 && action=="NT")){
+        correct++;
+       
+     }
+
      if(predicted == 1){
-        if(action == "T"){
+
+	attempted++; //number of times we have to read from BTB
+	
+/*if(btb.at(index)==branch.at(i)){
+        correct++;
+     }
+*/
+     }	
+      if(action == "T"){
+	   //  nextPC =true;
 	  
-	 if(btb.at(index)==branch.at(i)){
-		correct++;
-		b = btb.at(index);
-		nextPC = true;
-	}else{
-	    nextPC = false;
+	     btb.at(index) = branch.at(i);
+	   // b = btb.at(index);	
      
-	btb.at(index) = branch.at(i);
-	}
-	}
-	attempted++;
-      	
      }
      //update bimodal if inncorrect
     if(action == "NT" && predicted==1)bi.at(index) = 0;
     if(action == "T" && predicted==0)bi.at(index) = 1;
-  }
+ // }
+}
 
  return pair<long,long>(correct,attempted);
 }
