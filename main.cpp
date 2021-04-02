@@ -59,7 +59,8 @@ int main(int argc, char*argv[]){
 	myfile<<"\n";
 
        myfile<<pr.tournament()<<","<<total<<"; "<<endl;
-      myfile<<pr.BTB().first<<","<<pr.BTB().second<<";"<<endl;
+      
+    myfile<<pr.BTB().first<<","<<pr.BTB().second<<";"<<endl;
   return 0;
 
 

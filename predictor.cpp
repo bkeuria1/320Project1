@@ -216,47 +216,40 @@ return correct;
 }
 
 pair<long,long> Predictor::BTB(){
-  int tableSize = 512;
- bool nextPC = false;
-   long b;
-  long attempted = 0;
-  vector<int>bi(tableSize,1); //bimodal table
-  vector<int> btb(tableSize); //btb table
-  long correct = 0;
-  for(int i = 0; i<branch.size();i++){
+ int tableSize = 512;
+  long attempted = 0;//number of times we read from the branch predictor
+
+  vector<int>bi(tableSize,1); //bimodal table, initialize everything to Taken
+  vector<long> btb(tableSize); //empty btb table
+  long correct = 0;//number of correct values of predictions
+  for(int i = 0; i<branch.size();i++){  //loop through every line on the file.
+
+//branch refers to list of values on  in  third column on the input file (correct branch)
+//actions refers to list of values in the  second column of the input file (actual behavior)
+//address refers to list of values in the first column of the input file (PC)
      string action = actions.at(i);
+
      int index = address.at(i)%tableSize; //pc Counter,I called it address
-   //  if(address.at(i)!=btb.at(index)){ 
-     //
-     int predicted = bi.at(index);
-    
-    if(btb.at(index)==branch.at(i) ||(predicted==0 && action=="NT")){
-        correct++;
-       
-     }
-
-     if(predicted == 1){
-
-	attempted++; //number of times we have to read from BTB
-	
-/*if(btb.at(index)==branch.at(i)){
-        correct++;
-     }
-*/
+    int predicted = bi.at(index);//predicted value from bimodal table
+    int correct_branch = branch.at(i);  //get correct branch at line
+     if(predicted==1){ 
+//if predicted taken, then we read from BTB
+            attempted++;
+     	    if(btb.at(index)== correct_branch)correct++;	 
+  
      }	
-      if(action == "T"){
-	   //  nextPC =true;
-	  
-	     btb.at(index) = branch.at(i);
-	   // b = btb.at(index);	
-     
-     }
-     //update bimodal if inncorrect
+  	
+     if(action=="T")btb.at(index)=correct_branch;
+
+  //update the bimodal table if inncorrect (seems to be working)
+
     if(action == "NT" && predicted==1)bi.at(index) = 0;
     if(action == "T" && predicted==0)bi.at(index) = 1;
- // }
-}
 
+
+ }
+
+cout<<correct<<","<<attempted<<endl;
  return pair<long,long>(correct,attempted);
 }
 
