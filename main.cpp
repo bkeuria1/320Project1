@@ -9,7 +9,7 @@ int main(int argc, char*argv[]){
 
 //	map<unsigned long long,string> pcAddress;
 	long long total  = 0;	
-	vector< long>address;
+	vector<long long>address;
 	vector<string>actions;
         vector<long>branch;;
   // Temporary variables

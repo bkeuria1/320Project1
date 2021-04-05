@@ -8,11 +8,11 @@ using namespace std;
 Predictor::Predictor(){
 }
 
-Predictor::Predictor(vector<string>_actions,vector<long>_address,vector<long>_branch):actions(_actions), address(_address), branch(_branch){}
+Predictor::Predictor(vector<string>_actions,vector<long long>_address,vector<long>_branch):actions(_actions), address(_address), branch(_branch){}
 long Predictor::SingleBit(int size){
 
 
-   int correct = 0;
+   long correct = 0;
    vector<int> table(size,1);
   for (int i = 0; i<actions.size();i++){
            int index = address.at(i)%size;
@@ -43,7 +43,7 @@ long Predictor::SingleBit(int size){
 long Predictor::DoubleBit(int size){
 
 
-   int correct = 0;
+   long correct = 0;
    vector<int> table(size,3);
 //3-strongly taken
 //2-weakly taken
@@ -89,8 +89,8 @@ long Predictor::GShare(const int historySize){
 	}
        */
 
-	int ghr = 0;
-	int correct = 0;  
+	long  ghr = 0;
+	long correct = 0;  
 	//3 -strongly taken
 	//2 - weak taken
 	//1 - weak not taken
@@ -231,7 +231,7 @@ pair<long,long> Predictor::BTB(){
 
      int index = address.at(i)%tableSize; //pc Counter,I called it address
     int predicted = bi.at(index);//predicted value from bimodal table
-    int correct_branch = branch.at(i);  //get correct branch at line
+    long correct_branch = branch.at(i);  //get correct branch at line
      if(predicted==1){ 
 //if predicted taken, then we read from BTB
             attempted++;

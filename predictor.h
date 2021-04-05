@@ -8,12 +8,12 @@ class Predictor{
     private:
 //	map<unsigned long long,string> pcAction;
 	vector<string>actions;
-	vector< long> address;
+	vector< long long> address;
         
 	vector<long> branch;
     public:	
 	Predictor();
-	Predictor( vector<string>actions,vector< long> address, vector<long>branch);
+	Predictor( vector<string>actions,vector< long long> address, vector<long>branch);
 	long AlwaysTaken();
 	long NeverTaken();
         long SingleBit(int size);
