@@ -12,7 +12,8 @@ Predictor::Predictor(vector<string>_actions,vector<long long>_address,vector<lon
 long Predictor::SingleBit(int size){
 
 
-   long correct = 0;
+  
+  long correct = 0;
    vector<int> table(size,1);
   for (int i = 0; i<actions.size();i++){
            int index = address.at(i)%size;
